@@ -1,0 +1,10 @@
+#btnContainer{
+	border:1px solid grey;
+}
+
+.btn{
+	height: 50px;
+	width:50px;
+	background-color: yellow;
+	display: inline-block;
+}
