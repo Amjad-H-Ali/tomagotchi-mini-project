@@ -1,6 +1,5 @@
 
-
-
+let ageCounter = 0;
 
 
 
@@ -80,14 +79,19 @@ class Pet {
 	}//Age increments every x minutes
 	increaseAge(){
 
+		this.age += 1;
+
 	}//Pet gets hungry
 	increaseHunger(){
+		this.hunger += 1;
 		console.log('Hunger Works');
 	}//Pet gets sleepy
 	increaseSleepiness(){
+		this.sleepiness += 1;
 		console.log('Sleepiness Works');
 	}//Pet Gets Bored
 	increaseBoredom(){
+		this.boredom += 1;
 
 		console.log('Boredom works');
 
@@ -112,21 +116,47 @@ class Pet {
 	die(){
 
 	}
-	Timer(){
-		setInterval(()=>{
-			this.increaseBoredom();
-			this.increaseHunger();
-			this.increaseSleepiness();
-		},1000)
-	}
+	
 
 }
 
+
+
 const newPet = new Pet(0,1,1,1);
 
+//Timer function to run as long as app is running
+//Increments hunger,boredom,sleepiness every x minutes
+const timer= ()=>{
+		setInterval(()=>{
+			
+			newPet.increaseHunger();
+			newPet.increaseBoredom();
+			newPet.increaseSleepiness();
 
 
+			if(ageCounter === 20){
+				newPet.increaseAge();
+			}
 
 
+		},1000)
+}
 
+const printToScreen=(property,num)=>{
+	if(property === 'hunger'){
+		document.getElementById('hunger').innerText = 'Hunger: ' + num;
+	}
+
+	else if(property === 'sleepiness'){
+		document.getElementById('sleepiness').innerText = 'Sleepiness: ' + num;
+	}
+	else if(property === 'boredom'){
+		document.getElementById('bored').innerText = 'Boredom: ' + num;
+	}
+	else if(property === 'age'){
+		document.getElementById('age').innerText = 'Age: ' + num;
+	}
+}
+
+printToScreen('sleepiness',4);
 
