@@ -1,3 +1,8 @@
+body{
+	text-align: center;
+}
+
+
 #btnContainer{
 	border:1px solid grey;
 }
@@ -7,4 +12,8 @@
 	width:50px;
 	background-color: yellow;
 	display: inline-block;
+}
+
+#canvas{
+	background-color: rgb(230,230,200);
 }

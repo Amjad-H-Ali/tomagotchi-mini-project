@@ -133,9 +133,6 @@ class Pet {
 
 		
 
-	}
-	
-
 }
 
 
@@ -183,6 +180,21 @@ const printToScreen=(property,num)=>{
 	}
 }
 printToScreen();
+
+
+
+
+
+//Make Canvas for pet
+
+
+const canvas = document.getElementById('canvas');
+
+const ctx = canvas.getContext('2d');
+
+ctx.beginPath();
+
+
 
 
 
