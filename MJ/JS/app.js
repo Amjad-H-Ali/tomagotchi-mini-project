@@ -88,32 +88,38 @@ class Pet {
 	increaseAge(){
 
 		this.age += 1;
+		printToScreen('age',this.age);
 
 	}//Pet gets hungry
 	increaseHunger(){
 		this.hunger += 1;
 		console.log('Hunger Works');
+		printToScreen('hunger',this.hunger);
 	}//Pet gets sleepy
 	increaseSleepiness(){
 		this.sleepiness += 1;
 		console.log('Sleepiness Works');
+		printToScreen('sleepiness',this.sleepiness);
 	}//Pet Gets Bored
 	increaseBoredom(){
 		this.boredom += 1;
-
 		console.log('Boredom works');
+		printToScreen('boredom',this.boredom);
 
 	}//Button to feed
 	resetHunger(){
 		this.hunger = 1;
+		printToScreen('hunger',this.hunger);
 
 	}//Button to turn off Lights
 	resetSleepiness(){
 		this.sleepiness = 1;
+		printToScreen('sleepiness',this.sleepiness);
 
 	}//Button To Play with Pet
 	resetBoredom(){
 		this.boredom = 1;
+		printToScreen('boredom',this.boredom);
 	}
 	// If Age is X, Morph
 	morphs(){
@@ -124,6 +130,8 @@ class Pet {
 
 	}//If Either one reaches 10, pet dies
 	die(){
+
+		
 
 	}
 	
@@ -151,7 +159,7 @@ const timer= ()=>{
 
 		},1000)
 }
-
+//Displays updates property values to screen
 const printToScreen=(property,num)=>{
 	if(property === 'hunger'){
 		document.getElementById('hunger').innerText = 'Hunger: ' + num;
@@ -166,10 +174,17 @@ const printToScreen=(property,num)=>{
 	else if(property === 'age'){
 		document.getElementById('age').innerText = 'Age: ' + num;
 	}
-}
+	else{
 
-printToScreen('sleepiness',4);
-printToScreen('hunger',4);
-printToScreen('boredom',4);
-printToScreen('age',4);
+		document.getElementById('hunger').innerText = 'Hunger: ' + newPet.hunger;
+		document.getElementById('sleepiness').innerText = 'Sleepiness: ' + newPet.sleepiness;
+		document.getElementById('boredom').innerText = 'Boredom: ' + newPet.boredom;
+		document.getElementById('age').innerText = 'Age: ' + newPet.age;
+	}
+}
+printToScreen();
+
+
+
+
 
