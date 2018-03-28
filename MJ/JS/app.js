@@ -56,8 +56,16 @@ document.getElementById('nameBtn').addEventListener('click',function(e){
 //User Should Be able To Turn Off Lights, reset sleepiness
 
 document.getElementById('btnContainer').addEventListener('click',function(e){
-
-	console.log(event.target.innerText);
+	let clickedBtn = event.target.innerText
+	if( clickedBtn === 'Feed'){
+		newPet.resetHunger();
+	}
+	else if(clickedBtn === 'Play'){
+		newPet.resetBoredom();
+	}
+	else if(clickedBtn === 'Lights'){
+		newPet.resetSleepiness();
+	}
 })
 
 
@@ -97,13 +105,15 @@ class Pet {
 
 	}//Button to feed
 	resetHunger(){
+		this.hunger = 1;
 
 	}//Button to turn off Lights
 	resetSleepiness(){
+		this.sleepiness = 1;
 
 	}//Button To Play with Pet
 	resetBoredom(){
-
+		this.boredom = 1;
 	}
 	// If Age is X, Morph
 	morphs(){
@@ -134,7 +144,7 @@ const timer= ()=>{
 			newPet.increaseSleepiness();
 
 
-			if(ageCounter === 20){
+			if(ageCounter % 20 === 0){
 				newPet.increaseAge();
 			}
 
@@ -151,7 +161,7 @@ const printToScreen=(property,num)=>{
 		document.getElementById('sleepiness').innerText = 'Sleepiness: ' + num;
 	}
 	else if(property === 'boredom'){
-		document.getElementById('bored').innerText = 'Boredom: ' + num;
+		document.getElementById('boredom').innerText = 'Boredom: ' + num;
 	}
 	else if(property === 'age'){
 		document.getElementById('age').innerText = 'Age: ' + num;
@@ -159,4 +169,7 @@ const printToScreen=(property,num)=>{
 }
 
 printToScreen('sleepiness',4);
+printToScreen('hunger',4);
+printToScreen('boredom',4);
+printToScreen('age',4);
 
