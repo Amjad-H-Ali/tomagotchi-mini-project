@@ -1,9 +1,11 @@
 
 let ageCounter = 0;
 
-let stepsOfX = 3;
+let stepsOfX = 10;
 
-let stepsOfY = 3;
+let stepsOfY = 10;
+
+let control = true;
 
 //Make Canvas for pet
 
@@ -86,16 +88,20 @@ class Pet {
 	increaseAge(){
 
 		this.age += 1;
+		this.increaseSize()
 		printToScreen('age',this.age);
 
 	}//Pet gets hungry
 	increaseHunger(){
 		this.hunger += 1;
+		this.makeSmaller();
 		console.log('Hunger Works');
 		printToScreen('hunger',this.hunger);
 	}//Pet gets sleepy
 	increaseSleepiness(){
-		this.sleepiness += 1;
+		
+		this.sleepiness +=1;	
+		
 		console.log('Sleepiness Works');
 		printToScreen('sleepiness',this.sleepiness);
 	}//Pet Gets Bored
@@ -106,29 +112,37 @@ class Pet {
 
 	}//Button to feed
 	resetHunger(){
-		this.hunger = 1;
+		this.hunger -= 1;
+		this.morphs();
 		printToScreen('hunger',this.hunger);
 
 	}//Button to turn off Lights
 	resetSleepiness(){
-		this.sleepiness = 1;
+		this.sleepiness -= 1;
 		printToScreen('sleepiness',this.sleepiness);
 
 	}//Button To Play with Pet
 	resetBoredom(){
-		this.boredom = 1;
+		this.boredom -= 1;
 		printToScreen('boredom',this.boredom);
 	}
 	// If Age is X, Morph
 	//Increase Length of Body
-	morphs(num){
-		this.body.length += num;
+	morphs(){
+		this.body.length += 1;
 
-
+		ctx.clearRect(0,0,canvas.width,canvas.height);
 		this.drawBody(this.body.length);
 
 
-	}//Pet Animates across page
+	}
+	makeSmaller(){
+		this.body.length -= 1;
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		this.drawBody(this.body.length);
+	}
+
+	//Pet Animates across page
 	//Pet Moves
 	animation(){
 		if(this.body.x + stepsOfX > canvas.width-(this.body.r * this.body.length) || this.body.x + stepsOfX < this.body.r) {
@@ -147,6 +161,16 @@ class Pet {
 	
 	//If Either one reaches 10, pet dies
 	die(){
+		control = false;
+		canvas.style.backgroundColor = 'rgb(255,0,0)';
+		ctx.font = "100px Arial";
+		ctx.fillStyle = 'white';
+
+		ctx.fillText("Your Pet Died",150,450);
+		
+
+		
+
 	}
 	drawBody(num){
 		for(let i = 0; i < num; i ++){
@@ -159,7 +183,7 @@ class Pet {
 	}
 	//As pet eats, circles get bigger
 	increaseSize(){
-		this.body.r += 20;
+		this.body.r += 5;
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 
 		this.drawBody(this.body.length);
@@ -182,6 +206,8 @@ const timer = ()=>{
 			newPet.increaseHunger();
 			newPet.increaseBoredom();
 			newPet.increaseSleepiness();
+
+			ageCounter += 1;
 
 
 			if(ageCounter % 20 === 0){
@@ -224,8 +250,12 @@ const animateCanvas = ()=>{
 		newPet.animation();
 		newPet.drawBody(newPet.body.length);
 
-		window.requestAnimationFrame(animateCanvas)
+
+		if(control === true){
+			window.requestAnimationFrame(animateCanvas);
+		}
 	}
+
 
 
 
