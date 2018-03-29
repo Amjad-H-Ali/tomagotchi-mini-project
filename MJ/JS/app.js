@@ -1,9 +1,8 @@
-
 let ageCounter = 0;
 
-let stepsOfX = 5;
+let stepsOfX = 1;
 
-let stepsOfY = 5;
+let stepsOfY = 1;
 
 let control = true;
 
@@ -16,6 +15,9 @@ const canvas = document.getElementById('canvas');
 
 const ctx = canvas.getContext('2d');
 
+let af; // we will use this to stop the animation frame if pet dies
+
+
 
 //Prompt to name Pet
 //User Should Be Able to Name Pet with Prompt, if named, button removes for good
@@ -25,12 +27,14 @@ document.getElementById('nameBtn').addEventListener('click',function(e){
 	const nameBox = document.getElementById('name')
 
 	this.remove();
-
-	document.getElementById('nameHeader').innerHTML = 'Your Pet Name: ' + nameBox.value;
-
+	
 	newPet.name = nameBox.value;
 
+	document.getElementById('nameHeader').innerHTML = 'Your Pet Name: ' + newPet.name;
+
 	nameBox.remove();
+
+	newPet.drawBody(newPet.body.length);
 
 
 })
@@ -53,7 +57,7 @@ document.getElementById('btnContainer').addEventListener('click',function(e){
 	}
 	else if(clickedBtn === 'Lights'){
 		newPet.resetSleepiness();
-		console.log('l');
+		
 	}
 })
 
@@ -77,10 +81,10 @@ class Pet {
 		this.body = {
 			x:200,
 			y:50,
-			r:15,
+			r:5,
 			e:0,
 			//body should start with three circles
-			length:3
+			length:10
 
 
 			}
@@ -92,50 +96,52 @@ class Pet {
 
 		this.age += 1;
 		this.increaseSize();
-		printToScreen('age',this.age);
+		tomagotchi.printToScreen('age',this.age);
 
 	}//Pet gets hungry
 	increaseHunger(){
 		this.hunger += 1;
 		this.makeSmaller();
 		console.log('Hunger Works');
-		printToScreen('hunger',this.hunger);
+		tomagotchi.printToScreen('hunger',this.hunger);
 	}//Pet gets sleepy
 	increaseSleepiness(){
 		
 		this.sleepiness +=1;	
 		
 		console.log('Sleepiness Works');
-		printToScreen('sleepiness',this.sleepiness);
+		tomagotchi.printToScreen('sleepiness',this.sleepiness);
 	}//Pet Gets Bored
 	increaseBoredom(){
 		this.boredom += 1;
 		console.log('Boredom works');
-		printToScreen('boredom',this.boredom);
+		tomagotchi.printToScreen('boredom',this.boredom);
 
 	}//Button to feed
 	resetHunger(){
-		
+		control=false;
 		this.hunger -= 1;
 		this.morphs();
 		aFood.generateFood()
-		printToScreen('hunger',this.hunger);
+		tomagotchi.printToScreen('hunger',this.hunger);
 
 	}//Button to turn off Lights
 	resetSleepiness(){
 		this.sleepiness = 1;
 
-		printToScreen('sleepiness',this.sleepiness);
+		tomagotchi.printToScreen('sleepiness',this.sleepiness);
 		
-		lights == true ? (canvas.style.backgroundColor='black',lights = false, control = false) : (canvas.style.backgroundColor='rgb(230,230,200)',lights = true, control=true, animateCanvas());
+		lights == true ? (canvas.style.backgroundColor='black',lights = false, control = false) : (canvas.style.backgroundColor='rgb(230,230,200)',lights = true, control=true,this.drawBody(this.body.length));
 
 		
 
 	}
 
 	resetBoredom(){
+		control=true;
+		animateCanvas()
 		this.boredom -= 1;
-		printToScreen('boredom',this.boredom);
+		tomagotchi.printToScreen('boredom',this.boredom);
 	}
 	// If Age is X, Morph
 	//Increase Length of Body
@@ -171,16 +177,19 @@ class Pet {
 	
 	
 	//If Either one reaches 10, pet dies
-	die(){ 
+	die(){ console.log("die") 
 
-		control = false;
+
+		control = false; 
 		
 		ctx.font = "50px Arial";
 		ctx.fillStyle = 'white';
 		ctx.clearRect(0,0,canvas.width,canvas.height);
-		ctx.fillText("Your Pet Died",50,225);
-		canvas.style.backgroundColor = 'rgb(255,0,0)';
 
+		ctx.fillText("Your Pet Died",50,225); 
+		ctx.closePath();
+		canvas.style.backgroundColor = 'rgb(255,0,0)';
+		
 
 		
 
@@ -188,7 +197,7 @@ class Pet {
 	drawBody(num){
 		for(let i = 0; i < num; i ++){
 			ctx.beginPath();
-			ctx.arc(this.body.x + (i*15),this.body.y + (i*15),this.body.r ,this.body.e , Math.PI * 2);
+			ctx.arc(this.body.x + (i*this.body.r),this.body.y + (i*this.body.r),this.body.r ,this.body.e , Math.PI * 2);
 			ctx.fillStyle = '#333';
 			ctx.fill();
 			ctx.closePath();
@@ -211,87 +220,73 @@ class Pet {
 
 const newPet = new Pet(0,1,1,1);
 
-//Timer function to run as long as app is running
-//Increments hunger,boredom,sleepiness every x minutes
-const timer = ()=>{
-		setInterval(()=>{
 
-			if(newPet.hunger >= 10 || newPet.sleepiness >= 10 || newPet.boredom >= 10 || newPet.age >= 5){
-				newPet.die();
-			}else{
-				newPet.increaseHunger();
-				newPet.increaseBoredom();
-				newPet.increaseSleepiness();
+
+
+const tomagotchi = {
+
+	//Timer function to run as long as app is running
+	//Increments hunger,boredom,sleepiness every x minutes
+		timer (){ 
+			
+			const theTime = setInterval(()=>{ 
+
+				if(ageCounter % 2 === 0 ){
+					newPet.increaseAge();
+				}
+
+				if(newPet.hunger >= 10 || newPet.sleepiness >= 10 || newPet.boredom >= 10 || newPet.age >= 5){
+					// cancelAnimationFrame(af)
+					newPet.die(); 
+					clearInterval(theTime);
+					
+				}else{
+					newPet.increaseHunger();
+					newPet.increaseBoredom();
+					newPet.increaseSleepiness();
+				}
+
+				ageCounter += 1;
+
+
+
+				console.log('t');
+			},1000)
+		},
+		//Displays updates property values to screen
+		printToScreen(property,num){
+			if(property === 'hunger'){
+				document.getElementById('hunger').innerText = 'Hunger: ' + num;
 			}
 
-			ageCounter += 1;
-
-
-			if(ageCounter % 2 === 0){
-				newPet.increaseAge();
+			else if(property === 'sleepiness'){
+				document.getElementById('sleepiness').innerText = 'Sleepiness: ' + num;
 			}
+			else if(property === 'boredom'){
+				document.getElementById('boredom').innerText = 'Boredom: ' + num;
+			}
+			else if(property === 'age'){
+				document.getElementById('age').innerText = 'Age: ' + num;
+			}
+			else {
+
+				document.getElementById('hunger').innerText = 'Hunger: ' + newPet.hunger;
+				document.getElementById('sleepiness').innerText = 'Sleepiness: ' + newPet.sleepiness;
+				document.getElementById('boredom').innerText = 'Boredom: ' + newPet.boredom;
+				document.getElementById('age').innerText = 'Age: ' + newPet.age;
+			}
+		}
+
+}		
 
 
-		},1000)
-}
-//Displays updates property values to screen
-const printToScreen=(property,num)=>{
-	if(property === 'hunger'){
-		document.getElementById('hunger').innerText = 'Hunger: ' + num;
-	}
-
-	else if(property === 'sleepiness'){
-		document.getElementById('sleepiness').innerText = 'Sleepiness: ' + num;
-	}
-	else if(property === 'boredom'){
-		document.getElementById('boredom').innerText = 'Boredom: ' + num;
-	}
-	else if(property === 'age'){
-		document.getElementById('age').innerText = 'Age: ' + num;
-	}
-	else{
-
-		document.getElementById('hunger').innerText = 'Hunger: ' + newPet.hunger;
-		document.getElementById('sleepiness').innerText = 'Sleepiness: ' + newPet.sleepiness;
-		document.getElementById('boredom').innerText = 'Boredom: ' + newPet.boredom;
-		document.getElementById('age').innerText = 'Age: ' + newPet.age;
-	}
-}
-printToScreen();
-
-
-
-const animateCanvas = ()=>{
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-	
-	newPet.animation();
-	newPet.drawBody(newPet.body.length);
-
-
-	if(control === true){
-		window.requestAnimationFrame(animateCanvas);
-	}
-}
-
-
-
-		
-
-// 	}
-// 	else if (type === 'ball'){
-// 		ctx.beginPath();
-// 		ctx.arc(x,y,5,0,Math.PI *2)
-// 		ctx.fillStyle = 'green';
-// 		ctx.fill();
-// 	}	
-// }
 
 class Food {
 	constructor(){
 		this.x = Math.floor(Math.random() * canvas.width-30);
 		this.y = Math.floor(Math.random() * canvas.height-30);
-		this.height = 15;
-		this.width = 15;
+		this.height = 10;
+		this.width = 10;
 	}
 
 }
@@ -302,16 +297,16 @@ class FoodFactory {
 	}
 	generateFood(){
 		if(this.foods.length === 1){
-			ctx.clearRect(this.foods[0].x,this.foods[0].y,15,15);
+			ctx.clearRect(this.foods[0].x, this.foods[0].y, 10, 10);
 		}	
 		this.foods = [];
 			
-		const newFood = new Food ();
+		const newFood = new Food();
 			
 		this.foods.push(newFood);
 
 		ctx.beginPath();
-		ctx.rect(this.foods[0].x,this.foods[0].y,15,15);
+		ctx.rect(this.foods[0].x,this.foods[0].y,10,10);
 		ctx.fillStyle = 'brown';
 		ctx.fill();
 	
@@ -326,7 +321,45 @@ const aFood = new FoodFactory();
 
 
 
-//Circles should be able to Move Accross screen 
+
+
+
+ const  animateCanvas = () => { console.log("animateCanvas")
+
+	
+
+
+ 	if(control ===true ){ctx.clearRect(0,0,canvas.width,canvas.height);
+	newPet.animation();
+	newPet.drawBody(newPet.body.length);
+ 		window.requestAnimationFrame(animateCanvas);
+ 	}
+
+ 	
+	// ctx.clearRect(0,0,canvas.width,canvas.height);
+	// if(control === true){
+	
+	// 	newPet.animation();
+	// 	newPet.drawBody(newPet.body.length);
+
+
+	// 	af = window.requestAnimationFrame(animateCanvas);
+	// } else {
+	// 	ctx.clearRect(0,0,canvas.width,canvas.height);
+	// }
+	
+}
+
+
+
+
+
+
+
+tomagotchi.printToScreen();
+
+tomagotchi.timer()
+
 
 
 
