@@ -1,11 +1,13 @@
 
 let ageCounter = 0;
 
-let stepsOfX = 10;
+let stepsOfX = 5;
 
-let stepsOfY = 10;
+let stepsOfY = 5;
 
 let control = true;
+
+let lights = true;
 
 //Make Canvas for pet
 
@@ -51,6 +53,7 @@ document.getElementById('btnContainer').addEventListener('click',function(e){
 	}
 	else if(clickedBtn === 'Lights'){
 		newPet.resetSleepiness();
+		console.log('l');
 	}
 })
 
@@ -72,8 +75,8 @@ class Pet {
 		this.boredom = boredom;
 		//Property for pets body on canvas
 		this.body = {
-			x:450,
-			y:200,
+			x:200,
+			y:50,
 			r:15,
 			e:0,
 			//body should start with three circles
@@ -88,7 +91,7 @@ class Pet {
 	increaseAge(){
 
 		this.age += 1;
-		this.increaseSize()
+		this.increaseSize();
 		printToScreen('age',this.age);
 
 	}//Pet gets hungry
@@ -118,10 +121,16 @@ class Pet {
 
 	}//Button to turn off Lights
 	resetSleepiness(){
-		this.sleepiness -= 1;
-		printToScreen('sleepiness',this.sleepiness);
+		this.sleepiness = 1;
 
-	}//Button To Play with Pet
+		printToScreen('sleepiness',this.sleepiness);
+		
+		lights == true ? (canvas.style.backgroundColor='black',lights = false, control = false) : (canvas.style.backgroundColor='rgb(230,230,200)',lights = true, control=true, animateCanvas());
+
+		
+
+	}
+
 	resetBoredom(){
 		this.boredom -= 1;
 		printToScreen('boredom',this.boredom);
@@ -161,13 +170,14 @@ class Pet {
 	
 	//If Either one reaches 10, pet dies
 	die(){
-		control = false;
-		canvas.style.backgroundColor = 'rgb(255,0,0)';
-		ctx.font = "100px Arial";
-		ctx.fillStyle = 'white';
 
-		ctx.fillText("Your Pet Died",150,450);
+		control = false;
 		
+		ctx.font = "50px Arial";
+		ctx.fillStyle = 'white';
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		ctx.fillText("Your Pet Died",50,225);
+		canvas.style.backgroundColor = 'rgb(255,0,0)';
 
 		
 
@@ -202,15 +212,19 @@ const newPet = new Pet(0,1,1,1);
 //Increments hunger,boredom,sleepiness every x minutes
 const timer = ()=>{
 		setInterval(()=>{
-			
-			newPet.increaseHunger();
-			newPet.increaseBoredom();
-			newPet.increaseSleepiness();
+
+			if(newPet.hunger >= 10 || newPet.sleepiness >= 10 || newPet.boredom >= 10 || newPet.age >= 5){
+				newPet.die();
+			}else{
+				newPet.increaseHunger();
+				newPet.increaseBoredom();
+				newPet.increaseSleepiness();
+			}
 
 			ageCounter += 1;
 
 
-			if(ageCounter % 20 === 0){
+			if(ageCounter % 2 === 0){
 				newPet.increaseAge();
 			}
 
