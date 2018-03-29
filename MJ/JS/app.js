@@ -2,6 +2,14 @@
 let ageCounter = 0;
 
 
+//Make Canvas for pet
+
+
+const canvas = document.getElementById('canvas');
+
+const ctx = canvas.getContext('2d');
+
+
 
 
 
@@ -84,6 +92,17 @@ class Pet {
 		this.sleepiness = sleepiness;
 		//Boredom 1-10
 		this.boredom = boredom;
+		//Property for pets body on canvas
+		this.body = {
+			x:450,
+			y:450,
+			r:15,
+			e:0,
+			length:3
+
+			}
+
+		
 	}//Age increments every x minutes
 	increaseAge(){
 
@@ -122,7 +141,12 @@ class Pet {
 		printToScreen('boredom',this.boredom);
 	}
 	// If Age is X, Morph
-	morphs(){
+	//Increase Length of Body
+	morphs(num){
+		this.body.length += num;
+
+		 this.drawBody(this.body.length);
+
 
 	}//Pet Animates across page
 	//Pet Moves
@@ -130,6 +154,17 @@ class Pet {
 
 	}//If Either one reaches 10, pet dies
 	die(){
+	}
+	drawBody(num){
+		for(let i = 0; i < num; i ++){
+			ctx.beginPath();
+			ctx.arc(this.body.x + (i*15),this.body.y + (i*15),this.body.r ,this.body.e , Math.PI * 2);
+			ctx.fillStyle = '#333';
+			ctx.fill();
+			ctx.closePath();
+		}
+	}
+
 
 		
 
@@ -141,7 +176,7 @@ const newPet = new Pet(0,1,1,1);
 
 //Timer function to run as long as app is running
 //Increments hunger,boredom,sleepiness every x minutes
-const timer= ()=>{
+const timer = ()=>{
 		setInterval(()=>{
 			
 			newPet.increaseHunger();
@@ -185,16 +220,12 @@ printToScreen();
 
 
 
-//Make Canvas for pet
 
 
-const canvas = document.getElementById('canvas');
-
-const ctx = canvas.getContext('2d');
-
-ctx.beginPath();
-
-
+//body should start with three circles
+//As pet eats, circles get bigger
+//As body Ages, circles add.
+//Circles should be able to Move Accross screen 
 
 
 
