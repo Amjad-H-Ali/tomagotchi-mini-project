@@ -10,33 +10,6 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 
-
-
-
-
-
-
-
-
-
-//Pet Morph at certain ages
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //Prompt to name Pet
 //User Should Be Able to Name Pet with Prompt, if named, button removes for good
 //Name Displays On screen
@@ -98,6 +71,7 @@ class Pet {
 			y:450,
 			r:15,
 			e:0,
+			//body should start with three circles
 			length:3
 
 			}
@@ -145,14 +119,24 @@ class Pet {
 	morphs(num){
 		this.body.length += num;
 
-		 this.drawBody(this.body.length);
+
+		this.drawBody(this.body.length);
 
 
 	}//Pet Animates across page
 	//Pet Moves
 	animation(){
+		// if(this.body.x < canvas.width){
+		// 	this.body.x += 10;
+		// }
+		
 
-	}//If Either one reaches 10, pet dies
+	
+			
+		
+	}
+	
+	//If Either one reaches 10, pet dies
 	die(){
 	}
 	drawBody(num){
@@ -163,6 +147,13 @@ class Pet {
 			ctx.fill();
 			ctx.closePath();
 		}
+	}
+	//As pet eats, circles get bigger
+	increaseSize(){
+		this.body.r += 20;
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+
+		this.drawBody(this.body.length);
 	}
 
 
@@ -218,13 +209,19 @@ printToScreen();
 
 
 
+const animateCanvas = ()=>{
+		ctx.clearRect(0,0,canvas.width,canvas.height);
+		newPet.animation();
+		newPet.drawBody(newPet.body.length);
+
+		window.requestAnimationFrame(animateCanvas)
+	}
 
 
 
 
-//body should start with three circles
-//As pet eats, circles get bigger
-//As body Ages, circles add.
+
+
 //Circles should be able to Move Accross screen 
 
 
