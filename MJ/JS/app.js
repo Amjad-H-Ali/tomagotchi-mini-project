@@ -115,8 +115,10 @@ class Pet {
 
 	}//Button to feed
 	resetHunger(){
+		
 		this.hunger -= 1;
 		this.morphs();
+		aFood.generateFood()
 		printToScreen('hunger',this.hunger);
 
 	}//Button to turn off Lights
@@ -169,7 +171,7 @@ class Pet {
 	
 	
 	//If Either one reaches 10, pet dies
-	die(){
+	die(){ 
 
 		control = false;
 		
@@ -178,6 +180,7 @@ class Pet {
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		ctx.fillText("Your Pet Died",50,225);
 		canvas.style.backgroundColor = 'rgb(255,0,0)';
+
 
 		
 
@@ -259,19 +262,66 @@ printToScreen();
 
 
 const animateCanvas = ()=>{
-		ctx.clearRect(0,0,canvas.width,canvas.height);
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	
+	newPet.animation();
+	newPet.drawBody(newPet.body.length);
+
+
+	if(control === true){
+		window.requestAnimationFrame(animateCanvas);
+	}
+}
+
+
+
 		
-		newPet.animation();
-		newPet.drawBody(newPet.body.length);
 
+// 	}
+// 	else if (type === 'ball'){
+// 		ctx.beginPath();
+// 		ctx.arc(x,y,5,0,Math.PI *2)
+// 		ctx.fillStyle = 'green';
+// 		ctx.fill();
+// 	}	
+// }
 
-		if(control === true){
-			window.requestAnimationFrame(animateCanvas);
-		}
+class Food {
+	constructor(){
+		this.x = Math.floor(Math.random() * canvas.width-30);
+		this.y = Math.floor(Math.random() * canvas.height-30);
+		this.height = 15;
+		this.width = 15;
 	}
 
+}
+
+class FoodFactory {
+	constructor(){
+		this.foods =[];
+	}
+	generateFood(){
+		if(this.foods.length === 1){
+			ctx.clearRect(this.foods[0].x,this.foods[0].y,15,15);
+		}	
+		this.foods = [];
+			
+		const newFood = new Food ();
+			
+		this.foods.push(newFood);
+
+		ctx.beginPath();
+		ctx.rect(this.foods[0].x,this.foods[0].y,15,15);
+		ctx.fillStyle = 'brown';
+		ctx.fill();
+	
+
+	}
+	
+}
 
 
+const aFood = new FoodFactory();
 
 
 
