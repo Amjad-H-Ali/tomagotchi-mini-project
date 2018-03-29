@@ -1,6 +1,9 @@
 
 let ageCounter = 0;
 
+let stepsOfX = 3;
+
+let stepsOfY = 3;
 
 //Make Canvas for pet
 
@@ -68,13 +71,15 @@ class Pet {
 		//Property for pets body on canvas
 		this.body = {
 			x:450,
-			y:450,
+			y:200,
 			r:15,
 			e:0,
 			//body should start with three circles
 			length:3
 
+
 			}
+		
 
 		
 	}//Age increments every x minutes
@@ -126,15 +131,19 @@ class Pet {
 	}//Pet Animates across page
 	//Pet Moves
 	animation(){
-		// if(this.body.x < canvas.width){
-		// 	this.body.x += 10;
-		// }
-		
+		if(this.body.x + stepsOfX > canvas.width-(this.body.r * this.body.length) || this.body.x + stepsOfX < this.body.r) {
+    		stepsOfX = -stepsOfX;
+		}
 
-	
-			
+		if(this.body.y + stepsOfY > canvas.height-(this.body.r * this.body.length) || this.body.y + stepsOfY < this.body.r) {
+    		stepsOfY = -stepsOfY;
+		}
+
+		this.body.x += stepsOfX;
+		this.body.y += stepsOfY;
 		
 	}
+	
 	
 	//If Either one reaches 10, pet dies
 	die(){
@@ -211,6 +220,7 @@ printToScreen();
 
 const animateCanvas = ()=>{
 		ctx.clearRect(0,0,canvas.width,canvas.height);
+		
 		newPet.animation();
 		newPet.drawBody(newPet.body.length);
 
