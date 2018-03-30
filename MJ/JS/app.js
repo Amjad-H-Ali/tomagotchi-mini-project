@@ -32,7 +32,7 @@ document.getElementById('nameBtn').addEventListener('click',function(e){
 	
 	newPet.name = nameBox.value;
 
-	document.getElementById('nameHeader').innerHTML = 'Your Pet Name: ' + newPet.name;
+	document.getElementById('nameHeader').innerHTML =  newPet.name;
 
 	nameBox.remove();
 
@@ -144,7 +144,7 @@ class Pet {
 		control=true;
 		timeControl=true;
 		animateCanvas()
-		this.boredom -= 1;
+		this.boredom = 1;
 		tomagotchi.printToScreen('boredom',this.boredom);
 	}
 	// If Age is X, Morph
@@ -255,7 +255,7 @@ const tomagotchi = {
 
 
 				console.log('t');
-			},1000)
+			},10000)
 		},
 
 		//Displays updates property values to screen
@@ -335,9 +335,11 @@ const aFood = new FoodFactory();
 
 
  	if(control ===true ){ctx.clearRect(0,0,canvas.width,canvas.height);
-	newPet.animation();
-	newPet.drawBody(newPet.body.length);
- 		window.requestAnimationFrame(animateCanvas);
+		newPet.animation();
+		newPet.drawBody(newPet.body.length);
+	 	window.requestAnimationFrame(animateCanvas);
+	 	
+
  	}
 
  	
@@ -357,13 +359,13 @@ const aFood = new FoodFactory();
 
 
 
-// timeControl === true ? tomagotchi.timer() : clearInterval(tomagotchi.theTime)
+timeControl === true ? tomagotchi.timer() : clearInterval(tomagotchi.theTime)
 
 
 
 tomagotchi.printToScreen();
 
-// tomagotchi.timer()
+
 
 
 

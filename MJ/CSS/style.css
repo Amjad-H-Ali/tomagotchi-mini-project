@@ -5,10 +5,13 @@ body{
 
 
 #btnContainer{
-	border:1px solid grey;
+	
 	width:350;
 	height:50px;
-	position: relative;
+	
+
+	
+
 }
 
 .btn{
@@ -19,7 +22,10 @@ body{
 	color:#333;
 	background-color:yellow;
 	display: inline-block;
-	position: absolute;
+	
+
+
+
 }
 
 #canvas{
@@ -33,7 +39,7 @@ h4{
 
 	font-size: 30px;
 	margin:20px;
-	
+	color:#333;
 }
 
 .canvasContainer{
@@ -43,4 +49,16 @@ h4{
 	height: 800px;
 	width:600px;
 	border-radius: 50%;
+	
+}
+
+#name{
+	height: 30px;
+	width:300px;
+
+}
+
+h3{
+	font-size: 50px;
+	color:#333;
 }
