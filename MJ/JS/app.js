@@ -343,17 +343,6 @@ const aFood = new FoodFactory();
  	}
 
  	
-	// ctx.clearRect(0,0,canvas.width,canvas.height);
-	// if(control === true){
-	
-	// 	newPet.animation();
-	// 	newPet.drawBody(newPet.body.length);
-
-
-	// 	af = window.requestAnimationFrame(animateCanvas);
-	// } else {
-	// 	ctx.clearRect(0,0,canvas.width,canvas.height);
-	// }
 	
 }
 
