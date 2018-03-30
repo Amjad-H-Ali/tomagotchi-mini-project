@@ -10,12 +10,17 @@
 	<input id="name" type='text' placeholder='Name Yopur Pet!'  >
 	<input type='button' id='nameBtn' value='Enter'/>
 	<h3 id='nameHeader'></h3>
-	<h4 class="properties" id='hunger'></h4>
-	<h4 class="properties" id='sleepiness'></h4>
-	<h4 class="properties" id='boredom';></h4>
-	<h4 class="properties" id='age'></h4>
+	<div class=propContainer>	
+		<h4 class="properties" id='hunger'></h4>
+		<h4 class="properties" id='sleepiness'></h4>
+		<h4 class="properties" id='boredom';></h4>
+		<h4 class="properties" id='age'></h4>
+	</div>		
 	
-	<canvas id='canvas' height="400" width='400'></canvas>
+	<div class="canvasContainer">
+
+		<canvas id='canvas' height="400" width='400'></canvas>
+	</div>
 
 	<div id='btnContainer'>
 		<div class='btn' id='hungry'>Feed</div>

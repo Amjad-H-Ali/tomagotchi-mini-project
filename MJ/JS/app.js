@@ -8,6 +8,8 @@ let control = true;
 
 let lights = true;
 
+let timeControl = true;
+
 //Make Canvas for pet
 
 
@@ -127,11 +129,12 @@ class Pet {
 
 	}//Button to turn off Lights
 	resetSleepiness(){
+
 		this.sleepiness = 1;
 
 		tomagotchi.printToScreen('sleepiness',this.sleepiness);
 		
-		lights == true ? (canvas.style.backgroundColor='black',lights = false, control = false) : (canvas.style.backgroundColor='rgb(230,230,200)',lights = true, control=true,this.drawBody(this.body.length));
+		lights == true ? (canvas.style.backgroundColor='black',lights = false, control = false,timeControl=false) : (canvas.style.backgroundColor='rgb(250,250,200)',lights = true, control=true,timeControl=true,this.drawBody(this.body.length));
 
 		
 
@@ -139,6 +142,7 @@ class Pet {
 
 	resetBoredom(){
 		control=true;
+		timeControl=true;
 		animateCanvas()
 		this.boredom -= 1;
 		tomagotchi.printToScreen('boredom',this.boredom);
@@ -227,9 +231,9 @@ const tomagotchi = {
 
 	//Timer function to run as long as app is running
 	//Increments hunger,boredom,sleepiness every x minutes
-		timer (){ 
-			
-			const theTime = setInterval(()=>{ 
+		
+		timer(){	
+			 const theTime = setInterval(()=>{ 
 
 				if(ageCounter % 2 === 0 ){
 					newPet.increaseAge();
@@ -253,6 +257,7 @@ const tomagotchi = {
 				console.log('t');
 			},1000)
 		},
+
 		//Displays updates property values to screen
 		printToScreen(property,num){
 			if(property === 'hunger'){
@@ -352,13 +357,13 @@ const aFood = new FoodFactory();
 
 
 
-
+// timeControl === true ? tomagotchi.timer() : clearInterval(tomagotchi.theTime)
 
 
 
 tomagotchi.printToScreen();
 
-tomagotchi.timer()
+// tomagotchi.timer()
 
 
 
